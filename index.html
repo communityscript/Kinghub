@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Bot | Hosting</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0a0b10;
+  color: #fff;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 7%;
+  border-bottom: 1px solid #20222c;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #8174ff;
+}
+
+.status {
+  color: #aaa;
+  font-size: 12px;
+}
+
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 55px 20px;
+}
+
+.hero {
+  margin-bottom: 35px;
+}
+
+.hero small {
+  color: #958aff;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 52px);
+  margin: 15px 0;
+}
+
+.hero p {
+  color: #a4a5b5;
+  line-height: 1.7;
+}
+
+.panel {
+  background: #11131c;
+  border: 1px solid #292b3b;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.panel h2 {
+  font-size: 19px;
+  margin-bottom: 10px;
+}
+
+.muted {
+  color: #999caf;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.stat {
+  background: #151722;
+  padding: 20px;
+  border: 1px solid #292b3b;
+  border-radius: 13px;
+}
+
+.stat p {
+  color: #a3a5b7;
+  font-size: 13px;
+}
+
+.stat h2 {
+  font-size: 27px;
+  margin-top: 10px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  padding: 13px 18px;
+  border-radius: 9px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+.primary {
+  background: #7768ff;
+  color: white;
+}
+
+.primary:hover {
+  background: #9185ff;
+}
+
+.secondary {
+  background: #242638;
+  color: white;
+  border: 1px solid #37394d;
+}
+
+input {
+  width: 100%;
+  background: #0b0c13;
+  color: white;
+  border: 1px solid #35374a;
+  padding: 14px;
+  border-radius: 9px;
+  margin: 15px 0;
+  outline: none;
+}
+
+input:focus {
+  border-color: #8174ff;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.bot {
+  padding: 16px 0;
+  border-bottom: 1px solid #292b3b;
+}
+
+.bot:last-child {
+  border-bottom: none;
+}
+
+.bot-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.badge {
+  font-size: 11px;
+  color: #b7b9cb;
+  background: #242638;
+  padding: 6px 9px;
+  border-radius: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #666a7c;
+  font-size: 12px;
+}
+
+#message {
+  margin-top: 15px;
+  color: #b5adff;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 500px) {
+  header {
+    padding: 20px;
+  }
+
+  main {
+    padding: 35px 15px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">COMMUNITY<span>BOT</span></div>
+  <div class="status">PAINEL DE HOSPEDAGEM</div>
+</header>
+
+<main>
+  <section class="hero">
+    <small>SUA CENTRAL DE BOTS</small>
+    <h1>Seus bots.<br>Seu controle.</h1>
+    <p>
+      Organize seus projetos, acompanhe seus bots
+      e gerencie sua hospedagem em um só lugar.
+    </p>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <p>Bots cadastrados neste navegador</p>
+      <h2 id="total">0</h2>
+    </div>
+
+    <div class="stat">
+      <p>Bots executando de verdade</p>
+      <h2 id="running">0</h2>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Adicionar um bot</h2>
+    <p class="muted">
+      Cadastre o nome do seu projeto para organizar
+      seus bots no painel.
+    </p>
+
+    <input
+      id="botName"
+      type="text"
+      maxlength="40"
+      placeholder="Nome do seu bot"
+    >
+
+    <button class="primary" onclick="addBot()">
+      + Adicionar projeto
+    </button>
+
+    <p id="message"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Meus projetos</h2>
+    <p class="muted">
+      Seus projetos cadastrados neste navegador.
+    </p>
+
+    <div id="botList" style="margin-top:15px"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Servidor de execução</h2>
+    <p class="muted">
+      O painel ainda não está conectado a um servidor.
+      Para executar bots do Discord, precisamos configurar
+      um backend e um ambiente seguro de execução.
+    </p>
+
+    <div class="actions">
+      <button class="secondary" onclick="showStatus()">
+        Ver status da conexão
+      </button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  COMMUNITY BOT © 2026 — PAINEL DE HOSPEDAGEM
+</footer>
+
+<script>
+let bots = [];
+
+try {
+  bots = JSON.parse(
+    localStorage.getItem("communityBots") || "[]"
+  );
+
+  if (!Array.isArray(bots)) bots = [];
+} catch (error) {
+  bots = [];
+}
+
+function saveBots() {
+  try {
+    localStorage.setItem(
+      "communityBots",
+      JSON.stringify(bots)
+    );
+  } catch (error) {
+    document.getElementById("message").textContent =
+      "Não foi possível salvar os projetos neste navegador.";
+  }
+}
+
+function addBot() {
+  const input = document.getElementById("botName");
+  const name = input.value.trim();
+  const message = document.getElementById("message");
+
+  if (!name) {
+    message.textContent = "Digite o nome do seu bot.";
+    return;
+  }
+
+  bots.push({
+    id: Date.now(),
+    name: name,
+    running: false
+  });
+
+  saveBots();
+  input.value = "";
+  message.textContent =
+    "Projeto cadastrado! Ainda falta conectar o servidor.";
+
+  renderBots();
+}
+
+function removeBot(id) {
+  bots = bots.filter(bot => bot.id !== id);
+  saveBots();
+  renderBots();
+}
+
+function showStatus() {
+  alert(
+    "Servidor ainda não conectado. " +
+    "Este painel funciona apenas no navegador."
+  );
+}
+
+function renderBots() {
+  const list = document.getElementById("botList");
+
+  document.getElementById("total").textContent =
+    bots.length;
+
+  document.getElementById("running").textContent =
+    "0";
+
+  list.replaceChildren();
+
+  if (bots.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "Nenhum projeto cadastrado.";
+    list.appendChild(empty);
+    return;
+  }
+
+  bots.forEach(bot => {
+    const item = document.createElement("div");
+    item.className = "bot";
+
+    const top = document.createElement("div");
+    top.className = "bot-top";
+
+    const name = document.createElement("strong");
+    name.textContent = bot.name;
+
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = "Não conectado";
+
+    top.append(name, badge);
+
+    const remove = document.createElement("button");
+    remove.className = "secondary";
+    remove.textContent = "Excluir";
+    remove.style.marginTop = "12px";
+    remove.onclick = () => removeBot(bot.id);
+
+    item.append(top, remove);
+    list.appendChild(item);
+  });
+}
+
+renderBots();
+</script>
+
+</body>
+  </html>
